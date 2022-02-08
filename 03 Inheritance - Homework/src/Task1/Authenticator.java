@@ -2,7 +2,7 @@ package Task1;
 
 public class Authenticator {
 
-    public static boolean isLegitAccount(VideoStore myVideoStore, String email, int password) {
+    public static boolean isLegitAccount(VideoStore myVideoStore, String email, String password) {
         for (int index = 0; index < myVideoStore.getUsersNumber(); index++) {
             if (isUser(myVideoStore, email, password, index)) {
                 System.out.println("Access Granted! Welcome User!");
@@ -19,27 +19,29 @@ public class Authenticator {
         return false;
     }
 
-    public static String checkAccountType(VideoStore myVideoStore, String email, int password) {
+    public static Account checkAccountType(VideoStore myVideoStore, String email, String password) {
         for (int index = 0; index < myVideoStore.getUsersNumber(); index++) {
             if (isUser(myVideoStore, email, password, index)) {
-                return "user";
+                myVideoStore.getUser(index).logIn();
+                return myVideoStore.getUser(index);
             }
         }
 
         if (isAdmin(myVideoStore, email, password)) {
-            return "admin";
+            myVideoStore.getAdmin().logIn();
+            return myVideoStore.getAdmin();
         }
 
         return null;
     }
 
-    private static boolean isUser(VideoStore myVideoStore, String email, int password, int i) {
-        return email.equals(myVideoStore.getUser(i).getEmail())
-                && (password == myVideoStore.getUser(i).getPassword());
+    private static boolean isUser(VideoStore myVideoStore, String email, String password, int i) {
+        return email.equals(myVideoStore.getUser(i).getEmail()) &&
+                password.equals(myVideoStore.getUser(i).getPassword());
     }
 
-    private static boolean isAdmin(VideoStore myVideoStore, String email, int password) {
-        return email.equals(myVideoStore.getAdmin().getEmail())
-                && (password == myVideoStore.getAdmin().getPassword());
+    private static boolean isAdmin(VideoStore myVideoStore, String email, String password) {
+        return email.equals(myVideoStore.getAdmin().getEmail()) &&
+                password.equals(myVideoStore.getAdmin().getPassword());
     }
 }

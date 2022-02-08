@@ -2,10 +2,10 @@ package Task1;
 
 public class RentedMovie extends Movie {
 
-    private String rentedByUser;
+    private String rentedBy;
 
-    public RentedMovie(String name) {
+    public RentedMovie(String name, String userName) {
         super(name);
-        isRented = true;
+        this.rentedBy = userName;
     }
 }

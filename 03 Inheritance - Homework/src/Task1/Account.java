@@ -4,24 +4,34 @@ public class Account {
 
     private String name;
     private String email;
-    private int password;
+    private String password;
+    private boolean isLogged;
 
-    public Account(String name, String email, int password) {
+    public Account(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
+        this.isLogged = false;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
+    }
+
+    public boolean isLoggedIn() {
+        return isLogged;
+    }
+
+    public void logOut() {
+        isLogged = false;
+    }
+
+    public void logIn() {
+        isLogged = true;
     }
 
     public String getAccountDetails() {
