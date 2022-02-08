@@ -16,7 +16,7 @@ public class VideoStore {
         this.resourcesNumber = 0;
     }
 
-    public void setStoreResources(Movie resource) {
+    public void setStoreResource(Movie resource) {
         storeResources[resourcesNumber] = resource;
         resourcesNumber++;
     }
