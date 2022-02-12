@@ -11,7 +11,7 @@ public class ResourceDatabase {
     public ResourceDatabase() {
         this.users = new User[10];
         this.movies = new Movie[100];
-        this.admin = new Admin("admin", "admin@mail.bg", 1818);
+        this.admin = new Admin("admin", "admin@mail.bg", 1111);
         this.usersNumber = 0;
         this.moviesNumber = 0;
         storeUsers();
@@ -32,8 +32,13 @@ public class ResourceDatabase {
         return movies;
     }
 
-    public User[] getUsers() {
-        return users;
+    public Movie getMovie(String movieName) {
+        for (int i = 0; i < moviesNumber; i++) {
+            if(movies[i].getName().equals(movieName)){
+                return movies[i];
+            }
+        }
+        return null;
     }
 
     public Account getAccount(String email) {
@@ -57,13 +62,17 @@ public class ResourceDatabase {
         return null;
     }
 
+    public User[] getUsers() {
+        return users;
+    }
+
     private Account getAdmin() {
         return admin;
     }
 
     private void storeUsers() {
-        addUser(new User("Petar Petrov", "petar.petrov@mail.bg", 2020));
-        addUser(new User("Kiril Kirillov", "kiril.kirillov@mail.bg", 1919));
+        addUser(new User("Petar", "petar@mail.bg", 2222));
+        addUser(new User("Kiril", "kiril@mail.bg", 3333));
     }
 
     private void storeMovies() {

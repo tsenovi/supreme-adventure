@@ -10,6 +10,15 @@ public class Authenticator {
         this.loggedAccount = null;
     }
 
+    public LoginStatus login(String email, int password) {
+        Account account = database.getAccount(email);
+        if (account != null && account.getPassword() == password) {
+            loggedAccount = account;
+            return account instanceof Admin ? LoginStatus.LOGIN_ADMIN : LoginStatus.LOGIN_USER;
+        }
+        return LoginStatus.LOGIN_FAILED;
+    }
+
     public boolean registerUser(String username, String email, int password) {
         if (database.hasUser(email)) {
             return false;
@@ -20,17 +29,74 @@ public class Authenticator {
         return true;
     }
 
-    public LoginStatus login(String email, int password) {
-        Account account = database.getAccount(email);
-        if (account != null && account.getPassword() == password) {
-            loggedAccount = account;
-            return account instanceof Admin ? LoginStatus.LOGIN_ADMIN : LoginStatus.LOGIN_USER;
+    public boolean rentMovie(String movieName) {
+        Movie movieToRent = database.getMovie(movieName);
+        if (movieToRent != null) {
+            movieToRent.rent();
+            movieToRent.setRentedBy((User) loggedAccount);
+            return true;
         }
-        return LoginStatus.LOGIN_FAILED;
+
+        return false;
+    }
+    public boolean returnMovie(String movieName) {
+        Movie movieToReturn = database.getMovie(movieName);
+        if (movieToReturn != null) {
+            movieToReturn.returnMovie();
+            movieToReturn.setRentedBy(null);
+            return true;
+        }
+
+        return false;
     }
 
-    public void logout() {
-        this.loggedAccount = null;
+    public User[] getAllUsers() {
+        return database.getUsers();
+    }
+
+    public Movie[] getAllMovies() {
+        return database.getMovies();
+    }
+
+    public String getAvailableMovies() {
+        StringBuilder sb = new StringBuilder();
+        Movie[] movies = getAllMovies();
+        for (Movie movie : movies) {
+            if (movie != null && movie.getRentedBy() == null) {
+                sb.append(movie.getName());
+                sb.append("\n");
+            }
+        }
+        return sb.isEmpty() ?
+                "There are no available movies": sb.toString();
+    }
+
+    public String getRentedMovies() {
+        StringBuilder sb = new StringBuilder();
+        Movie[] movies = getAllMovies();
+        for (Movie movie : movies) {
+            if (movie != null && movie.getRentedBy() != null) {
+                sb.append(movie.getName());
+                sb.append(" - rented by ");
+                sb.append(movie.getRentedBy().getUsername());
+                sb.append("\n");
+            }
+        }
+        return sb.isEmpty() ?
+                "There are no rented movies": sb.toString();
+    }
+
+    public String getRentedMoviesByUser() {
+        StringBuilder sb = new StringBuilder();
+        Movie[] movies = getAllMovies();
+        for (Movie movie : movies) {
+            if (movie != null && movie.getRentedBy() == loggedAccount) {
+                sb.append(movie.getName());
+                sb.append("\n");
+            }
+        }
+        return sb.isEmpty() ?
+                "There are no rented movies by you!": sb.toString();
     }
 
     public boolean hasLoggedAccount() {
@@ -41,11 +107,7 @@ public class Authenticator {
         return hasLoggedAccount() && loggedAccount instanceof Admin;
     }
 
-    public User[] getAllUsers() {
-        return database.getUsers();
-    }
-
-    public Movie[] getAllMovies() {
-        return database.getMovies();
+    public void logout() {
+        this.loggedAccount = null;
     }
 }

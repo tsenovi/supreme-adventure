@@ -39,12 +39,11 @@ public class VideoStore {
         int accountChoice = communicator.getDecimalInput();
         switch (accountChoice) {
             case 1 -> startCreatingUserProcess();
-            case 2 -> communicator.show(authenticator.getAllUsers());
-            case 3 -> communicator.show(authenticator.getAllMovies());
-// TODO     case 4 -> Show all rented movies and who rented them.
+            case 2 -> getAllRegisteredUsers();
+            case 3 -> getAllMovieResources();
+            case 4 -> getAllRentedMovies();
             case 5 -> {
-                communicator.show("Logout successful!");
-                authenticator.logout();
+                runLogoutProcess();
             }
         }
     }
@@ -52,11 +51,12 @@ public class VideoStore {
     private void runUserOptions() {
         int accountChoice = communicator.getDecimalInput();
         switch (accountChoice) {
-// TODO     case 1 -> Show all rented movies by you and return chosen one.
-// TODO     case 2 -> Show all available movies and rent chosen one.;
-            case 3 -> {
-                communicator.show("Logout successful!");
-                authenticator.logout();
+            case 1 -> getAllRentedMoviesByUser();
+            case 2 -> runReturnMovieProcess();
+            case 3 -> getAllAvailableMovies();
+            case 4 -> runRentMovieProcess();
+            case 5 -> {
+                runLogoutProcess();
             }
         }
     }
@@ -74,6 +74,11 @@ public class VideoStore {
         }
     }
 
+    private void runLogoutProcess() {
+        communicator.show("Logout successful!");
+        authenticator.logout();
+    }
+
     private void startCreatingUserProcess() {
         communicator.show("Enter username:");
         String username = communicator.getTextInput();
@@ -87,26 +92,72 @@ public class VideoStore {
         if (password == repeatPassword) {
             boolean registerIsSuccessful = authenticator.registerUser(username, email, password);
             if (registerIsSuccessful) {
-                communicator.show("Registration successful");
+                communicator.show("Registration successful.");
             } else {
-                communicator.show("Such user exists.");
+                communicator.show("Such user exists!");
             }
         } else {
-            communicator.show("Passwords should match");
+            communicator.show("Passwords should match!");
         }
     }
 
+    private void runRentMovieProcess() {
+        communicator.show("Enter the name of the movie:");
+        String movieName = communicator.getTextInput();
+        boolean rentIsSuccessful = authenticator.rentMovie(movieName);
+        if (rentIsSuccessful) {
+            communicator.show(movieName + " is successfully rented.");
+        } else {
+            communicator.show("No such movie to rent!");
+        }
+    }
+
+    private void runReturnMovieProcess() {
+        communicator.show("Enter the name of the movie:");
+        String movieName = communicator.getTextInput();
+        boolean returnIsSuccessful = authenticator.returnMovie(movieName);
+        if (returnIsSuccessful) {
+            communicator.show(movieName + " is successfully returned.");
+        } else {
+            communicator.show("No such movie to return!");
+        }
+    }
+
+    private void getAllRentedMovies() {
+        communicator.show(authenticator.getRentedMovies());
+    }
+
+    private void getAllMovieResources() {
+        communicator.show(authenticator.getAllMovies());
+    }
+
+    private void getAllRegisteredUsers() {
+        communicator.show(authenticator.getAllUsers());
+    }
+
+    private void getAllRentedMoviesByUser() {
+        communicator.show(authenticator.getRentedMoviesByUser());
+    }
+
+    private void getAllAvailableMovies() {
+        communicator.show(authenticator.getAvailableMovies());
+    }
+
     private String getAdminOptions() {
-        return "1. Create user account.\n" +
-                "2. See all users.\n" +
-                "3. See all movies.\n" +
-                "4. See all rented movies and who rented them.\n" +
-                "5. Logout";
+        return """
+                1. Create user account
+                2. See all users
+                3. See all movies
+                4. See all rented movies and who rented them
+                5. Logout""";
     }
 
     private String getUserOptions() {
-        return "1. See all rented movies by you. Return selected movie.\n" +
-                "2. See all available movies. Rent selected movie.\n" +
-                "3. Logout";
+        return """
+                1. See all rented movies by you
+                2. Return movie
+                3. See all available movies
+                4. Rent movie
+                5. Logout""";
     }
 }
