@@ -12,22 +12,6 @@ public class Panettone {
         panettoneTotalCount++;
     }
 
-    public static int getPanettoneTotalCount() {
-        return panettoneTotalCount;
-    }
-
-    public String getFilling() {
-        return filling;
-    }
-
-    public static int getChocolatePanettoneCount() {
-        return chocolatePanettoneCount;
-    }
-
-    public static int getRaisinPanettoneCount() {
-        return raisinPanettoneCount;
-    }
-
     public void setFilling(String filling) {
         if ("chocolate".equalsIgnoreCase(filling)) {
             this.filling = filling;

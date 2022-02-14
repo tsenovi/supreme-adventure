@@ -9,43 +9,15 @@ public class Dog {
     private boolean isAdopted;
 
     public Dog(String name, String color, int egn, String profilePicture) {
-        this.setName(name);
-        this.setColor(color);
-        this.setEgn(egn);
-        this.setProfilePicture(profilePicture);
+        this.name = name;
+        this.color = color;
+        this.egn = egn;
+        this.profilePicture = profilePicture;
         this.isAdopted = false;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public int getEgn() {
-        return egn;
-    }
-
-    public void setEgn(int egn) {
-        this.egn = egn;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public void getDetails() {
