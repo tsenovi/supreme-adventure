@@ -1,14 +1,13 @@
 package Task1.videostore;
 
-
 import Task1.auth.Authenticator;
 import Task1.auth.LoginStatus;
 import Task1.communicator.Communicator;
 
 public class VideoStore {
 
-    private Communicator communicator;
-    private Authenticator authenticator;
+    private final Communicator communicator;
+    private final Authenticator authenticator;
 
     public VideoStore() {
         this.communicator = new Communicator();
@@ -42,9 +41,7 @@ public class VideoStore {
             case 2 -> getAllRegisteredUsers();
             case 3 -> getAllMovieResources();
             case 4 -> getAllRentedMovies();
-            case 5 -> {
-                runLogoutProcess();
-            }
+            case 5 -> runLogoutProcess();
         }
     }
 
@@ -55,9 +52,7 @@ public class VideoStore {
             case 2 -> runReturnMovieProcess();
             case 3 -> getAllAvailableMovies();
             case 4 -> runRentMovieProcess();
-            case 5 -> {
-                runLogoutProcess();
-            }
+            case 5 -> runLogoutProcess();
         }
     }
 
@@ -75,20 +70,28 @@ public class VideoStore {
     }
 
     private void runLogoutProcess() {
-        communicator.show("Logout successful!");
         authenticator.logout();
+        communicator.show("Logout successful!");
     }
 
     private void startCreatingUserProcess() {
         communicator.show("Enter username:");
         String username = communicator.getTextInput();
         communicator.show("Enter email:");
-        String email = communicator.getTextInput();
+        String email;
+        while (true) {
+            email = communicator.getTextInput();
+            if (authenticator.isValidEmail(email)) {
+                break;
+            } else {
+                communicator.show("Invalid email. Enter new one:");
+            }
+        }
+
         communicator.show("Enter password:");
         int password = communicator.getDecimalInput();
         communicator.show("Enter password again:");
         int repeatPassword = communicator.getDecimalInput();
-
         if (password == repeatPassword) {
             boolean registerIsSuccessful = authenticator.registerUser(username, email, password);
             if (registerIsSuccessful) {

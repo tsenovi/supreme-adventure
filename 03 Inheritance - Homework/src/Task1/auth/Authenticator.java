@@ -2,7 +2,7 @@ package Task1.auth;
 
 public class Authenticator {
 
-    private ResourceDatabase database;
+    private final ResourceDatabase database;
     private Account loggedAccount;
 
     public Authenticator() {
@@ -16,6 +16,7 @@ public class Authenticator {
             loggedAccount = account;
             return account instanceof Admin ? LoginStatus.LOGIN_ADMIN : LoginStatus.LOGIN_USER;
         }
+
         return LoginStatus.LOGIN_FAILED;
     }
 
@@ -29,6 +30,14 @@ public class Authenticator {
         return true;
     }
 
+    public User[] getAllUsers() {
+        return database.getUsers();
+    }
+
+    public Movie[] getAllMovies() {
+        return database.getMovies();
+    }
+
     public boolean rentMovie(String movieName) {
         Movie movieToRent = database.getMovie(movieName);
         if (movieToRent != null) {
@@ -39,6 +48,7 @@ public class Authenticator {
 
         return false;
     }
+
     public boolean returnMovie(String movieName) {
         Movie movieToReturn = database.getMovie(movieName);
         if (movieToReturn != null) {
@@ -50,14 +60,6 @@ public class Authenticator {
         return false;
     }
 
-    public User[] getAllUsers() {
-        return database.getUsers();
-    }
-
-    public Movie[] getAllMovies() {
-        return database.getMovies();
-    }
-
     public String getAvailableMovies() {
         StringBuilder sb = new StringBuilder();
         Movie[] movies = getAllMovies();
@@ -67,8 +69,9 @@ public class Authenticator {
                 sb.append("\n");
             }
         }
+
         return sb.isEmpty() ?
-                "There are no available movies": sb.toString();
+                "There are no available movies" : sb.toString();
     }
 
     public String getRentedMovies() {
@@ -82,8 +85,9 @@ public class Authenticator {
                 sb.append("\n");
             }
         }
+
         return sb.isEmpty() ?
-                "There are no rented movies": sb.toString();
+                "There are no rented movies" : sb.toString();
     }
 
     public String getRentedMoviesByUser() {
@@ -95,8 +99,9 @@ public class Authenticator {
                 sb.append("\n");
             }
         }
+
         return sb.isEmpty() ?
-                "There are no rented movies by you!": sb.toString();
+                "There are no rented movies by you!" : sb.toString();
     }
 
     public boolean hasLoggedAccount() {
@@ -109,5 +114,9 @@ public class Authenticator {
 
     public void logout() {
         this.loggedAccount = null;
+    }
+
+    public boolean isValidEmail(String email) {
+        return email.matches("[@.a-z]+");
     }
 }

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Communicator {
 
-    private Scanner console;
+    private final Scanner console;
 
     public Communicator() {
         this.console = new Scanner(System.in);
@@ -39,7 +39,7 @@ public class Communicator {
 
     public int getDecimalInput() {
         String textInput = getTextInput();
-        while (!textInput.matches("[0-9]+")){
+        while (!textInput.matches("[0-9]+")) {
             show("Invalid input, use numbers only!");
             textInput = getTextInput();
         }
