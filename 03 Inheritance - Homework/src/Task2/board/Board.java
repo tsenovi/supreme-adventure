@@ -23,11 +23,11 @@ public class Board {
         boxes[0][0] = new Box(0, 0, new Rook(Color.WHITE));
         boxes[0][1] = new Box(0, 1, new Knight(Color.WHITE));
         boxes[0][2] = new Box(0, 2, new Bishop(Color.WHITE));
-        boxes[0][3] = new Box(0, 2, new King(Color.WHITE));
-        boxes[0][4] = new Box(0, 2, new Queen(Color.WHITE));
-        boxes[0][5] = new Box(0, 2, new Bishop(Color.WHITE));
-        boxes[0][6] = new Box(0, 2, new Knight(Color.WHITE));
-        boxes[0][7] = new Box(0, 2, new Rook(Color.WHITE));
+        boxes[0][3] = new Box(0, 3, new King(Color.WHITE));
+        boxes[0][4] = new Box(0, 4, new Queen(Color.WHITE));
+        boxes[0][5] = new Box(0, 5, new Bishop(Color.WHITE));
+        boxes[0][6] = new Box(0, 6, new Knight(Color.WHITE));
+        boxes[0][7] = new Box(0, 7, new Rook(Color.WHITE));
         boxes[1][0] = new Box(1, 0, new Pawn(Color.WHITE));
         boxes[1][1] = new Box(1, 1, new Pawn(Color.WHITE));
         boxes[1][2] = new Box(1, 2, new Pawn(Color.WHITE));
