@@ -1,9 +1,10 @@
 package Task2.board;
 
 public class Queen extends PlayingPiece {
-    private char shape;
 
-    public Queen(Color color) {
+    public Queen(int x, int y, Color color) {
+        this.x = x;
+        this.y = y;
         this.color = color;
         this.setShape();
     }
@@ -18,6 +19,7 @@ public class Queen extends PlayingPiece {
         return this.color;
     }
 
+    @Override
     public char getShape() {
         return shape;
     }
@@ -32,14 +34,33 @@ public class Queen extends PlayingPiece {
     }
 
     @Override
-    public boolean isMoveLegal(Player player, Box initialBox, Box finalBox) {
-        if (initialBox.getX() == finalBox.getX()
-                && initialBox.getY() == finalBox.getY()) return false;
+    public int getX() {
+        return this.x;
+    }
 
-        int diffX = Math.abs(initialBox.getX() - finalBox.getX());
-        int diffY = Math.abs(initialBox.getY() - finalBox.getY());
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public boolean isMoveLegal(Player player, int newX, int newY) {
+        if (x == newX && y == newY) return false;
+
+        int diffX = Math.abs(x - newX);
+        int diffY = Math.abs(y - newY);
         if (diffX == diffY) return true;
 
-        return initialBox.getX() == finalBox.getX() || initialBox.getY() == finalBox.getY();
+        return x == newX || y == newY;
     }
 }

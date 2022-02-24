@@ -1,9 +1,10 @@
 package Task2.board;
 
 public class Rook extends PlayingPiece {
-    private char shape;
 
-    public Rook(Color color) {
+    public Rook(int x, int y, Color color) {
+        this.x = x;
+        this.y = y;
         this.color = color;
         this.setShape();
     }
@@ -18,6 +19,7 @@ public class Rook extends PlayingPiece {
         return this.color;
     }
 
+    @Override
     public char getShape() {
         return shape;
     }
@@ -32,9 +34,29 @@ public class Rook extends PlayingPiece {
     }
 
     @Override
-    public boolean isMoveLegal(Player player, Box initialBox, Box finalBox) {
-        if (initialBox.getX() == finalBox.getX()
-                && initialBox.getY() == finalBox.getY()) return false;
-        return initialBox.getX() == finalBox.getX() || initialBox.getY() == finalBox.getY();
+    public int getX() {
+        return this.x;
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public boolean isMoveLegal(Player player, int newX, int newY) {
+        if (x == newX && y == newY) return false;
+
+        return x == newX || y == newY;
     }
 }

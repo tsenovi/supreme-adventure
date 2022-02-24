@@ -16,4 +16,8 @@ public class Player {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public boolean isWhitePlayer(){
+        return color == Color.WHITE;
+    }
 }

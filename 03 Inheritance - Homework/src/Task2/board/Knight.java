@@ -1,9 +1,10 @@
 package Task2.board;
 
 public class Knight extends PlayingPiece {
-    private char shape;
 
-    public Knight(Color color) {
+    public Knight(int x, int y, Color color) {
+        this.x = x;
+        this.y = y;
         this.color = color;
         this.setShape();
     }
@@ -18,6 +19,7 @@ public class Knight extends PlayingPiece {
         return this.color;
     }
 
+    @Override
     public char getShape() {
         return shape;
     }
@@ -25,19 +27,38 @@ public class Knight extends PlayingPiece {
     @Override
     public void setShape() {
         if (isWhite()) {
-        this.shape = '\u2658';
+            this.shape = '\u2658';
         } else {
             this.shape = '\u265E';
         }
     }
 
     @Override
-    public boolean isMoveLegal(Player player, Box initialBox, Box finalBox) {
-        if (initialBox.getX() == finalBox.getX()
-                && initialBox.getY() == finalBox.getY()) return false;
+    public int getX() {
+        return this.x;
+    }
 
-        int diffX = Math.abs(initialBox.getX() - finalBox.getX());
-        int diffY = Math.abs(initialBox.getY() - finalBox.getY());
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public boolean isMoveLegal(Player player, int newX, int newY) {
+        if (x == newX && y == newY) return false;
+
+        int diffX = Math.abs(x - newX);
+        int diffY = Math.abs(y - newY);
 
         return (diffX + diffY) == 3 && diffX != 0 && diffY != 0;
     }
