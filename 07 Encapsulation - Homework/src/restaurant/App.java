@@ -1,6 +1,6 @@
 package restaurant;
 
-import restaurant.system.System;
+import restaurant.sys.System;
 
 public class App {
 

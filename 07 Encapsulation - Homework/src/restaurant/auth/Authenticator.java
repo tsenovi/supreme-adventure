@@ -20,4 +20,16 @@ public class Authenticator {
 
         return LoginStatus.LOGIN_FAILED;
     }
+
+    public boolean hasLoggedChef() {
+        return loggedAccount instanceof Chef;
+    }
+
+    public boolean hasLoggedAccount() {
+        return loggedAccount != null;
+    }
+
+    public void logout() {
+        loggedAccount = null;
+    }
 }
