@@ -3,14 +3,14 @@ package restaurant.component;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+public class ServiceDatabase {
 
+    private final Table[] tables;
     private List<Item> menuItems;
     private List<Order> activeOrders;
     private List<Order> historyOrders;
-    private Table[] tables;
 
-    public Database() {
+    public ServiceDatabase() {
         this.menuItems = new ArrayList<>();
         this.activeOrders = new ArrayList<>();
         this.historyOrders = new ArrayList<>();
@@ -83,5 +83,33 @@ public class Database {
         for (int i = 0; i < tables.length; i++) {
             tables[i] = new Table(i + 1);
         }
+    }
+
+    public String getAvailableTablesNumbers() {
+        List<Integer> availableTableNumbers = new ArrayList<>();
+        for (Table table : tables) {
+            if (table.getOrder() == null) {
+                availableTableNumbers.add(table.getTableID());
+            }
+        }
+
+        return availableTableNumbers.toString();
+    }
+
+    public boolean createNewOrder(int tableNumber) {
+        for (Table table : tables) {
+            if (tableNumber == table.getTableID()
+                    && table.getOrder() == null) {
+                table.setOrder(new Order(tableNumber));
+                activeOrders.add(table.getOrder());
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public String getAllActiveOrders() {
+        return activeOrders.toString();
     }
 }

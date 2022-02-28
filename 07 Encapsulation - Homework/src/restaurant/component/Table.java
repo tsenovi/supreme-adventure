@@ -1,6 +1,6 @@
 package restaurant.component;
 
-class Table {
+public class Table {
 
     private Order order;
     private final int tableID;

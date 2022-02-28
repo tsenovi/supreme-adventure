@@ -1,7 +1,7 @@
 package restaurant.component;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Formatter;
 import java.util.List;
 
 public class Order {
@@ -12,12 +12,12 @@ public class Order {
     private List<OrderItem> orderItems;
     private double totalPrice;
 
-    public Order(int tableID, List<OrderItem> orderItems, double totalPrice) {
+    public Order(int tableID) {
         this.tableID = tableID;
         this.setDate();
-        this.orderStatus = OrderStatus.IN_PROGRESS;
-        this.orderItems = orderItems;
-        this.totalPrice = totalPrice;
+        this.orderStatus = OrderStatus.NEW;
+        this.orderItems = new ArrayList<>();
+        this.totalPrice = 0;
     }
 
     public int getTableID() {
@@ -29,12 +29,12 @@ public class Order {
     }
 
     private void setDate() {
-        Formatter format = new Formatter();
-        Calendar calendar = Calendar.getInstance();
-
-        // '%tl' for hours and '%tM' for minutes
-        format.format("%tl:%tM", calendar, calendar);
-        this.date = String.valueOf(format);
+        Calendar now = Calendar.getInstance();
+        this.date = now.get(Calendar.DATE) + "." +
+                (now.get(Calendar.MONTH) + 1) + "." +
+                now.get(Calendar.YEAR) + " - " +
+                now.get(Calendar.HOUR_OF_DAY) + ":" +
+                now.get(Calendar.MINUTE);
     }
 
     public OrderStatus getOrderStatus() {
@@ -64,5 +64,16 @@ public class Order {
 
     public void removeItemToOrder(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "tableID=" + tableID +
+                ", date='" + date + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", orderItems=" + orderItems.toString() +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

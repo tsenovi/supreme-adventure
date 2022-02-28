@@ -31,4 +31,13 @@ public class OrderItem {
     private double calculatePrice(Item item, int quantity) {
         return item.getPrice() * quantity;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "item=" + item +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 }
