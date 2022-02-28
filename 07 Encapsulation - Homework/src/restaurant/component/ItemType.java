@@ -1,4 +1,4 @@
-package restaurant.storage;
+package restaurant.component;
 
 public enum ItemType {
     DISH, DRINK

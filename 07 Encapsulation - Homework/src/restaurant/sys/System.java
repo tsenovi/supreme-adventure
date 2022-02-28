@@ -2,20 +2,20 @@ package restaurant.sys;
 
 import restaurant.auth.Authenticator;
 import restaurant.auth.LoginStatus;
-import restaurant.com.Communicator;
-import restaurant.storage.ItemType;
-import restaurant.storage.Menu;
+import restaurant.ui.Communicator;
+import restaurant.component.ItemType;
+import restaurant.component.Database;
 
 public class System {
 
     private final Authenticator authenticator;
     private final Communicator communicator;
-    private final Menu menu;
+    private final Database database;
 
     public System() {
         this.authenticator = new Authenticator();
         this.communicator = new Communicator();
-        this.menu = new Menu();
+        this.database = new Database();
     }
 
     public void start() {
@@ -27,61 +27,6 @@ public class System {
                 startLoginProcess();
             }
         }
-    }
-
-    private void processAccountOptions() {
-        if (authenticator.hasLoggedChef()) {
-            communicator.show(showChefOptions());
-            int accountChoice = communicator.getDecimalInput();
-            switch (accountChoice) {
-                case 1 -> authenticator.logout();
-                //TODO
-            }
-        } else {
-            communicator.show(showWaiterOptions());
-            int accountChoice = communicator.getDecimalInput();
-            switch (accountChoice) {
-                case 1 -> authenticator.logout();
-                case 2 -> startCreatingNewItemProcess();
-                case 3 -> startRemovingItemProcess();
-                case 4 -> showCurrentMenu();
-            }
-        }
-    }
-
-    private void startCreatingNewItemProcess() {
-        showCurrentMenu();
-        communicator.show("Enter item name: ");
-        String itemName = communicator.getTextInput();
-        communicator.show("Enter item price: ");
-        double itemPrice = communicator.getDecimalInput();
-        communicator.show("Enter item type: (ex. Drink/Dish)");
-        ItemType itemType = convertUserChoice(communicator.getTextInput());
-
-        boolean isItemAdded = menu.createItem(itemName, itemPrice, itemType);
-        if (isItemAdded) {
-            communicator.show("Item added successfully!");
-        } else {
-            communicator.show("Item already exists!");
-        }
-    }
-
-    private void startRemovingItemProcess() {
-        showCurrentMenu();
-        communicator.show("Enter item name: ");
-        String itemName = communicator.getTextInput();
-
-        boolean isItemRemoved = menu.removeItem(itemName);
-        if (isItemRemoved) {
-            communicator.show("Item removed successfully!");
-        } else {
-            communicator.show("Item does not exists!");
-        }
-    }
-
-    private ItemType convertUserChoice(String textInput) {
-        if (textInput.equalsIgnoreCase("drink")) return ItemType.DRINK;
-        else return ItemType.DISH;
     }
 
     private void startLoginProcess() {
@@ -102,9 +47,72 @@ public class System {
         return communicator.getTextInput();
     }
 
+    private void processAccountOptions() {
+        if (authenticator.hasLoggedChef()) {
+            runChefOptions();
+        } else {
+            runWaiterOptions();
+        }
+    }
+
+    private void runChefOptions() {
+        communicator.show(showChefOptions());
+        int accountChoice = communicator.getDecimalInput();
+        switch (accountChoice) {
+            case 1 -> authenticator.logout();
+            //TODO
+        }
+    }
+
+    private void runWaiterOptions() {
+        communicator.show(showWaiterOptions());
+        int accountChoice = communicator.getDecimalInput();
+        switch (accountChoice) {
+            case 1 -> authenticator.logout();
+            case 2 -> startCreatingNewItemProcess();
+            case 3 -> startRemovingItemProcess();
+            case 4 -> showCurrentMenu();
+        }
+    }
+
+    private void startCreatingNewItemProcess() {
+        showCurrentMenu();
+        communicator.show("Enter item name: ");
+        String itemName = communicator.getTextInput();
+        communicator.show("Enter item price: ");
+        double itemPrice = communicator.getDecimalInput();
+        communicator.show("Enter item type: (ex. Drink/Dish)");
+        ItemType itemType = convertUserChoice(communicator.getTextInput());
+
+        boolean isItemAdded = database.createNewItem(itemName, itemPrice, itemType);
+        if (isItemAdded) {
+            communicator.show("Item added successfully!");
+        } else {
+            communicator.show("Item already exists!");
+        }
+    }
+
+    private ItemType convertUserChoice(String textInput) {
+        if (textInput.equalsIgnoreCase("drink")) return ItemType.DRINK;
+        else return ItemType.DISH;
+    }
+
+    private void startRemovingItemProcess() {
+        showCurrentMenu();
+        communicator.show("Enter item name: ");
+        String itemName = communicator.getTextInput();
+
+        boolean isItemRemoved = database.removeExistedItem(itemName);
+        if (isItemRemoved) {
+            communicator.show("Item removed successfully!");
+        } else {
+            communicator.show("Item does not exists!");
+        }
+    }
+
     private void showCurrentMenu() {
         communicator.show("\tCurrent Menu");
-        communicator.show(menu.getItemsSortedByType());
+        communicator.show(database.getItemsSortedByType());
     }
 
     private String showChefOptions() {

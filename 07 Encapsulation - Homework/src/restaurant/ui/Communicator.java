@@ -1,4 +1,4 @@
-package restaurant.com;
+package restaurant.ui;
 
 import java.util.Scanner;
 
