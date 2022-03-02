@@ -1,10 +1,10 @@
-package restaurant.component;
+package restaurant.model;
 
 public class Item {
 
-    private String name;
-    private double price;
-    private ItemType type;
+    private final String name;
+    private final double price;
+    private final ItemType type;
 
     public Item(String name, double price, ItemType type) {
         this.name = name;

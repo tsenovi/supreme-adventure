@@ -1,4 +1,4 @@
-package restaurant.component;
+package restaurant.model;
 
 public class Table {
 

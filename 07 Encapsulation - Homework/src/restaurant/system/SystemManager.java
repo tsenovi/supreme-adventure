@@ -1,26 +1,26 @@
-package restaurant.sys;
+package restaurant.system;
 
 import restaurant.auth.Authenticator;
 import restaurant.auth.LoginStatus;
+import restaurant.model.Order;
 import restaurant.ui.Communicator;
-import restaurant.component.ItemType;
-import restaurant.component.ServiceDatabase;
+import restaurant.model.ItemType;
 
-public class System {
+public class SystemManager {
 
     private final Authenticator authenticator;
     private final Communicator communicator;
-    private final ServiceDatabase serviceDatabase;
+    private final SystemDatabase systemDatabase;
 
-    public System() {
+    public SystemManager() {
         this.authenticator = new Authenticator();
         this.communicator = new Communicator();
-        this.serviceDatabase = new ServiceDatabase();
+        this.systemDatabase = new SystemDatabase();
     }
 
     public void start() {
         while (true) {
-            communicator.show("\tRestaurant System");
+            communicator.show("Restaurant System");
             if (authenticator.hasLoggedAccount()) {
                 processAccountOptions();
             } else {
@@ -74,6 +74,7 @@ public class System {
             case 4 -> showCurrentMenu();
             case 5 -> showActiveOrders();
             case 6 -> startCreatingNewOrderProcess();
+            case 7 -> startModifyingOrderProcess();
         }
     }
 
@@ -84,9 +85,9 @@ public class System {
         communicator.show("Enter item price: ");
         double itemPrice = communicator.getDecimalInput();
         communicator.show("Enter item type: (ex. Drink/Dish)");
-        ItemType itemType = convertUserChoice(communicator.getTextInput());
+        ItemType itemType = convertAccountChoice(communicator.getTextInput());
 
-        boolean isItemAdded = serviceDatabase.createNewItem(itemName, itemPrice, itemType);
+        boolean isItemAdded = systemDatabase.createMenuItem(itemName, itemPrice, itemType);
         if (isItemAdded) {
             communicator.show("Item added successfully!");
         } else {
@@ -94,9 +95,9 @@ public class System {
         }
     }
 
-    private ItemType convertUserChoice(String textInput) {
+    private ItemType convertAccountChoice(String textInput) {
         if (textInput.equalsIgnoreCase("drink")) return ItemType.DRINK;
-        else return ItemType.DISH;
+        else return ItemType.FOOD;
     }
 
     private void startRemovingItemProcess() {
@@ -104,7 +105,7 @@ public class System {
         communicator.show("Enter item name: ");
         String itemName = communicator.getTextInput();
 
-        boolean isItemRemoved = serviceDatabase.removeExistedItem(itemName);
+        boolean isItemRemoved = systemDatabase.removeMenuItem(itemName);
         if (isItemRemoved) {
             communicator.show("Item removed successfully!");
         } else {
@@ -113,10 +114,8 @@ public class System {
     }
 
     private void startCreatingNewOrderProcess() {
-        communicator.show("Available tables:\n" + serviceDatabase.getAvailableTablesNumbers());
-        communicator.show("Select number of table: ");
-        int tableNumber = communicator.getDecimalInput();
-        boolean isOrderCreated = serviceDatabase.createNewOrder(tableNumber);
+        communicator.show("Available tables: " + systemDatabase.getAvailableTablesNumbers());
+        boolean isOrderCreated = systemDatabase.createNewOrder(getTableNumberInput());
         if (isOrderCreated) {
             communicator.show("Order created successfully!");
         } else {
@@ -124,23 +123,72 @@ public class System {
         }
     }
 
+    private void startModifyingOrderProcess() {
+        Order currentOrder = getOrder();
+        addItemToOrderProcess(currentOrder);
+    }
+
+    private Order getOrder() {
+        Order currentOrder;
+        do {
+            currentOrder = systemDatabase.getTable(getTableNumberInput()).getOrder();
+            if (currentOrder != null) {
+                break;
+            } else {
+                communicator.show("No such order exists!");
+            }
+        } while (true);
+        return currentOrder;
+    }
+
+    private int getTableNumberInput() {
+        communicator.show("Enter table number: ");
+        return communicator.getDecimalInput();
+    }
+
+    private void addItemToOrderProcess(Order currentOrder) {
+        do {
+            showCurrentMenu();
+            communicator.show(currentOrder);
+
+            communicator.show("Insert item name or type exit: ");
+            String itemName = communicator.getTextInput();
+            if (itemName.equalsIgnoreCase("exit")) break;
+            communicator.show("Insert quantity: ");
+            int itemQuantity = communicator.getDecimalInput();
+
+            boolean isItemAddedToOrder = systemDatabase.modifyOrder(currentOrder, itemName, itemQuantity);
+            if (isItemAddedToOrder) {
+                communicator.show("Item added successfully to the order!");
+            } else {
+                communicator.show("No such item exists!");
+                break;
+            }
+        } while (true);
+    }
+
     private void showCurrentMenu() {
-        communicator.show("Restaurant Menu\n"
-                + serviceDatabase.getItemsSortedByType());
+        communicator.show("Restaurant Menu");
+        communicator.show(systemDatabase.getMenuItemsByType());
     }
 
     private void showActiveOrders() {
-        communicator.show("Active orders\n"
-                + serviceDatabase.getAllActiveOrders());
+        if (systemDatabase.getActiveOrders().isEmpty()) {
+            communicator.show("No active orders!");
+        } else {
+            communicator.show("Active orders: ");
+            communicator.show(systemDatabase.getActiveOrders());
+        }
     }
-
+    //TODO options 2,3
     private String showChefOptions() {
         return """
                 1. Logout
-//TODO          2. See new orders
+                2. See new orders
                 3. Change order status""";
     }
 
+    //TODO option 8,9
     private String showWaiterOptions() {
         return """
                 1. Logout
@@ -148,6 +196,9 @@ public class System {
                 3. Remove item from the menu
                 4. See the menu
                 5. See active orders
-                6. Create new order""";
+                6. Create new order
+                7. Modify order
+                8. Change order status
+                9. View order history""";
     }
 }

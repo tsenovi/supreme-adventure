@@ -1,10 +1,10 @@
 package restaurant;
 
-import restaurant.sys.System;
+import restaurant.system.SystemManager;
 
 public class App {
 
     public static void main(String[] args) {
-        new System().start();
+        new SystemManager().start();
     }
 }

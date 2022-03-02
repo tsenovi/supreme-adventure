@@ -1,4 +1,4 @@
-package restaurant.component;
+package restaurant.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Order {
 
-    private int tableID;
+    private final int tableID;
     private String date;
     private OrderStatus orderStatus;
-    private List<OrderItem> orderItems;
+    private final List<OrderItem> orderItems;
     private double totalPrice;
 
     public Order(int tableID) {
@@ -51,9 +51,7 @@ public class Order {
 
     public double getTotalPrice() {
         totalPrice = 0;
-        orderItems.forEach((orderItem) -> {
-            totalPrice += orderItem.getPrice();
-        });
+        orderItems.forEach((orderItem) -> totalPrice += orderItem.getPrice());
 
         return totalPrice;
     }
@@ -62,18 +60,7 @@ public class Order {
         this.orderItems.add(orderItem);
     }
 
-    public void removeItemToOrder(OrderItem orderItem) {
+    public void removeItemFromOrder(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "tableID=" + tableID +
-                ", date='" + date + '\'' +
-                ", orderStatus=" + orderStatus +
-                ", orderItems=" + orderItems.toString() +
-                ", totalPrice=" + totalPrice +
-                '}';
     }
 }

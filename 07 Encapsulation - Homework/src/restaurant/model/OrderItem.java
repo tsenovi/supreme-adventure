@@ -1,10 +1,10 @@
-package restaurant.component;
+package restaurant.model;
 
 public class OrderItem {
 
-    private Item item;
+    private final Item item;
     private int quantity;
-    private double price;
+    private final double price;
 
     public OrderItem(Item item, int quantity) {
         this.item = item;
@@ -30,14 +30,5 @@ public class OrderItem {
 
     private double calculatePrice(Item item, int quantity) {
         return item.getPrice() * quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "item=" + item +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                '}';
     }
 }
