@@ -199,6 +199,7 @@ public class SystemManager {
                 6. Create new order
                 7. Modify order
                 8. Change order status
-                9. View order history""";
+                9. View order history
+                10.""";
     }
 }
