@@ -3,6 +3,7 @@ package restaurant.system;
 import restaurant.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SystemDatabase {
@@ -20,7 +21,8 @@ public class SystemDatabase {
     }
 
     public Table getTable(int index) {
-        return tables[index - 1];
+        if (index > 0 && index <= tables.length) return tables[index - 1];
+        return null;
     }
 
     public Item getMenuItem(String name) {
@@ -32,7 +34,6 @@ public class SystemDatabase {
 
         return null;
     }
-
 
     public boolean createMenuItem(String name, double price, ItemType type) {
         for (Item item : menuItems) {
@@ -57,22 +58,9 @@ public class SystemDatabase {
         return false;
     }
 
-    public String getMenuItemsByType() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ItemType.FOOD).append(":\n");
-        sortItems(sb, ItemType.FOOD);
-        sb.append("\n").append(ItemType.DRINK).append(":\n");
-        sortItems(sb, ItemType.DRINK);
-        return sb.toString();
-    }
-
-    private void sortItems(StringBuilder sb, ItemType comparator) {
-        for (Item item : menuItems) {
-            if (item.getType().equals(comparator)) {
-                sb.append(item.getName()).append(" - Price: ")
-                        .append(item.getPrice()).append("\n");
-            }
-        }
+    public List<Item> getMenuDetails() {
+        Collections.sort(menuItems);
+        return menuItems;
     }
 
     private void addItemToMenu(Item item) {
@@ -108,15 +96,29 @@ public class SystemDatabase {
         return availableTableNumbers.toString();
     }
 
-    public List<Order> getActiveOrders() {
-        List<Order> activeOrders = new ArrayList<>();
+    public List<Order> getSortedOrdersByGivenStatus(String status) {
+        List<Order> sortedOrders = new ArrayList<>();
         allOrders.forEach(order -> {
-            if (!order.getOrderStatus().equals(OrderStatus.PAID)) {
-                activeOrders.add(order);
+            switch (status.toLowerCase()) {
+                case "active" -> {
+                    if (!order.getOrderStatus().equals(OrderStatus.PAID)) {
+                        sortedOrders.add(order);
+                    }
+                }
+                case "new" -> {
+                    if (order.getOrderStatus().equals(OrderStatus.NEW)) {
+                        sortedOrders.add(order);
+                    }
+                }
+                case "paid" -> {
+                    if (order.getOrderStatus().equals(OrderStatus.PAID)) {
+                        sortedOrders.add(order);
+                    }
+                }
             }
         });
 
-        return activeOrders;
+        return sortedOrders;
     }
 
     public boolean createNewOrder(int tableNumber) {

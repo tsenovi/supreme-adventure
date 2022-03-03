@@ -1,6 +1,6 @@
 package restaurant.model;
 
-public class Item {
+public class Item implements Comparable<Item> {
 
     private final String name;
     private final double price;
@@ -22,5 +22,10 @@ public class Item {
 
     public ItemType getType() {
         return type;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        return this.getType().compareTo(o.getType());
     }
 }

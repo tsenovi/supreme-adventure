@@ -1,5 +1,6 @@
 package restaurant.ui;
 
+import restaurant.model.Item;
 import restaurant.model.Order;
 import restaurant.model.OrderItem;
 
@@ -18,13 +19,19 @@ public class Communicator {
         System.out.println(text);
     }
 
+    public void showMenu(List<Item> items) {
+        for (Item item : items) {
+            System.out.println(item.getName() + " - Price: " + item.getPrice());
+        }
+    }
+
     public void show(List<Order> orders) {
         for (Order order : orders) {
             show(showOrderDetails(order));
         }
     }
 
-    public void show(Order order){
+    public void show(Order order) {
         show(showOrderDetails(order));
     }
 
@@ -55,6 +62,7 @@ public class Communicator {
     }
 
     public int getDecimalInput() {
+
         return Integer.parseInt(getTextInput());
     }
 }

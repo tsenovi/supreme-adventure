@@ -3,8 +3,12 @@ package restaurant.system;
 import restaurant.auth.Authenticator;
 import restaurant.auth.LoginStatus;
 import restaurant.model.Order;
+import restaurant.model.OrderStatus;
+import restaurant.model.Table;
 import restaurant.ui.Communicator;
 import restaurant.model.ItemType;
+
+import java.util.List;
 
 public class SystemManager {
 
@@ -60,8 +64,52 @@ public class SystemManager {
         int accountChoice = communicator.getDecimalInput();
         switch (accountChoice) {
             case 1 -> authenticator.logout();
-            //TODO
+            case 2 -> showNewOrdersProcess();
+            case 3 -> startChangingOrderStatusProcess();
         }
+    }
+
+    private void startChangingOrderStatusProcess() {
+        Order currentOrder = getOrder();
+        changeOrderStatus(currentOrder);
+    }
+
+    private void changeOrderStatus(Order currentOrder) {
+        communicator.show(currentOrder);
+        String accountChoice;
+        if (authenticator.hasLoggedChef()) {
+            changeStatusByChef(currentOrder);
+        } else {
+            changeStatusByWaiter(currentOrder);
+        }
+    }
+
+    private void changeStatusByChef(Order currentOrder) {
+        String accountChoice;
+        communicator.show("Change status to preparing or completed: ");
+        accountChoice = communicator.getTextInput();
+        switch (accountChoice.toLowerCase()) {
+            case "preparing" -> currentOrder.setOrderStatus(OrderStatus.PREPARING);
+            case "completed" -> currentOrder.setOrderStatus(OrderStatus.COMPLETED);
+            default -> communicator.show("No such status!");
+        }
+    }
+
+    private void changeStatusByWaiter(Order currentOrder) {
+        String accountChoice;
+        communicator.show("Change status to served or paid: ");
+        accountChoice = communicator.getTextInput();
+        switch (accountChoice.toLowerCase()) {
+            case "served" -> currentOrder.setOrderStatus(OrderStatus.SERVED);
+            case "paid" -> finishOrderProcess(currentOrder);
+            default -> communicator.show("No such status!");
+        }
+    }
+
+    private void finishOrderProcess(Order currentOrder) {
+        currentOrder.setOrderStatus(OrderStatus.PAID);
+        communicator.show(currentOrder);
+        systemDatabase.getTable(currentOrder.getTableID()).setOrder(null);
     }
 
     private void runWaiterOptions() {
@@ -72,9 +120,11 @@ public class SystemManager {
             case 2 -> startCreatingNewItemProcess();
             case 3 -> startRemovingItemProcess();
             case 4 -> showCurrentMenu();
-            case 5 -> showActiveOrders();
+            case 5 -> showActiveOrdersProcess();
             case 6 -> startCreatingNewOrderProcess();
             case 7 -> startModifyingOrderProcess();
+            case 8 -> startChangingOrderStatusProcess();
+            case 9 -> showPaidOrdersProcess();
         }
     }
 
@@ -131,11 +181,16 @@ public class SystemManager {
     private Order getOrder() {
         Order currentOrder;
         do {
-            currentOrder = systemDatabase.getTable(getTableNumberInput()).getOrder();
-            if (currentOrder != null) {
-                break;
+            Table currentTable = systemDatabase.getTable(getTableNumberInput());
+            if (currentTable != null) {
+                currentOrder = currentTable.getOrder();
+                if (currentOrder != null) {
+                    break;
+                } else {
+                    communicator.show("No such order exists!");
+                }
             } else {
-                communicator.show("No such order exists!");
+                communicator.show("No such table exists!");
             }
         } while (true);
         return currentOrder;
@@ -169,18 +224,32 @@ public class SystemManager {
 
     private void showCurrentMenu() {
         communicator.show("Restaurant Menu");
-        communicator.show(systemDatabase.getMenuItemsByType());
+        communicator.showMenu(systemDatabase.getMenuDetails());
     }
 
-    private void showActiveOrders() {
-        if (systemDatabase.getActiveOrders().isEmpty()) {
-            communicator.show("No active orders!");
+    private void showNewOrdersProcess() {
+        getOrdersDetailsByStatus("new", "No new orders!", "List of new orders: ");
+    }
+
+    private void showActiveOrdersProcess() {
+        getOrdersDetailsByStatus("active", "No active orders!", "List of active orders: ");
+    }
+
+    private void showPaidOrdersProcess() {
+        getOrdersDetailsByStatus("paid", "No paid orders!", "List of paid orders: ");
+    }
+
+    private void getOrdersDetailsByStatus(String paid, String text, String text1) {
+        List<Order> ordersByStatus = systemDatabase.getSortedOrdersByGivenStatus(paid);
+        if (ordersByStatus.isEmpty()) {
+            communicator.show(text);
         } else {
-            communicator.show("Active orders: ");
-            communicator.show(systemDatabase.getActiveOrders());
+            communicator.show(text1);
+            communicator.show(ordersByStatus);
         }
     }
-    //TODO options 2,3
+
+    //TODO options 3
     private String showChefOptions() {
         return """
                 1. Logout
@@ -188,7 +257,7 @@ public class SystemManager {
                 3. Change order status""";
     }
 
-    //TODO option 8,9
+    //TODO option 8
     private String showWaiterOptions() {
         return """
                 1. Logout
