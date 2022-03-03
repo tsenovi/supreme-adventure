@@ -106,7 +106,8 @@ public class SystemDatabase {
                     }
                 }
                 case "new" -> {
-                    if (order.getOrderStatus().equals(OrderStatus.NEW)) {
+                    if (!order.getOrderStatus().equals(OrderStatus.SERVED)
+                            && !order.getOrderStatus().equals(OrderStatus.PAID)) {
                         sortedOrders.add(order);
                     }
                 }

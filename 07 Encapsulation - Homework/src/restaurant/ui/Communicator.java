@@ -36,7 +36,7 @@ public class Communicator {
     }
 
     private String showOrderDetails(Order order) {
-        return "Order:\n" +
+        return "Order: " +
                 "Table: " + order.getTableID() +
                 "\nDate: " + order.getDate() +
                 "\nOrder status: " + order.getOrderStatus() +

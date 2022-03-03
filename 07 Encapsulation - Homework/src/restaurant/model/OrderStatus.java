@@ -1,5 +1,5 @@
 package restaurant.model;
 
 public enum OrderStatus {
-    NEW, PREPARING, COMPLETED, SERVED, PAID
+    NEW, PREPARING, READY, SERVED, PAID
 }

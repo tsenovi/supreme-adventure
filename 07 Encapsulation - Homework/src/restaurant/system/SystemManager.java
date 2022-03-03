@@ -60,7 +60,7 @@ public class SystemManager {
     }
 
     private void runChefOptions() {
-        communicator.show(showChefOptions());
+        communicator.show(getChefOptions());
         int accountChoice = communicator.getDecimalInput();
         switch (accountChoice) {
             case 1 -> authenticator.logout();
@@ -76,7 +76,6 @@ public class SystemManager {
 
     private void changeOrderStatus(Order currentOrder) {
         communicator.show(currentOrder);
-        String accountChoice;
         if (authenticator.hasLoggedChef()) {
             changeStatusByChef(currentOrder);
         } else {
@@ -85,23 +84,21 @@ public class SystemManager {
     }
 
     private void changeStatusByChef(Order currentOrder) {
-        String accountChoice;
-        communicator.show("Change status to preparing or completed: ");
-        accountChoice = communicator.getTextInput();
-        switch (accountChoice.toLowerCase()) {
-            case "preparing" -> currentOrder.setOrderStatus(OrderStatus.PREPARING);
-            case "completed" -> currentOrder.setOrderStatus(OrderStatus.COMPLETED);
+        communicator.show(getChefAvailableOrderStatuses());
+        int accountChoice = communicator.getDecimalInput();
+        switch (accountChoice) {
+            case 1 -> currentOrder.setOrderStatus(OrderStatus.PREPARING);
+            case 2 -> currentOrder.setOrderStatus(OrderStatus.READY);
             default -> communicator.show("No such status!");
         }
     }
 
     private void changeStatusByWaiter(Order currentOrder) {
-        String accountChoice;
-        communicator.show("Change status to served or paid: ");
-        accountChoice = communicator.getTextInput();
-        switch (accountChoice.toLowerCase()) {
-            case "served" -> currentOrder.setOrderStatus(OrderStatus.SERVED);
-            case "paid" -> finishOrderProcess(currentOrder);
+        communicator.show(getWaiterAvailableOrderStatuses());
+        int accountChoice = communicator.getDecimalInput();
+        switch (accountChoice) {
+            case 1 -> currentOrder.setOrderStatus(OrderStatus.SERVED);
+            case 2 -> finishOrderProcess(currentOrder);
             default -> communicator.show("No such status!");
         }
     }
@@ -113,7 +110,7 @@ public class SystemManager {
     }
 
     private void runWaiterOptions() {
-        communicator.show(showWaiterOptions());
+        communicator.show(getWaiterOptions());
         int accountChoice = communicator.getDecimalInput();
         switch (accountChoice) {
             case 1 -> authenticator.logout();
@@ -249,16 +246,21 @@ public class SystemManager {
         }
     }
 
-    //TODO options 3
-    private String showChefOptions() {
+    private String getChefOptions() {
         return """
                 1. Logout
                 2. See new orders
                 3. Change order status""";
     }
 
-    //TODO option 8
-    private String showWaiterOptions() {
+    private String getChefAvailableOrderStatuses() {
+        return """
+                1. Preparing
+                2. Ready""";
+    }
+
+    //TODO option 7.2 remove OrderItem
+    private String getWaiterOptions() {
         return """
                 1. Logout
                 2. Add item to the menu
@@ -269,5 +271,11 @@ public class SystemManager {
                 7. Modify order
                 8. Change order status
                 9. View order history""";
+    }
+
+    private String getWaiterAvailableOrderStatuses() {
+        return """
+                1. Served
+                2. Paid""";
     }
 }
