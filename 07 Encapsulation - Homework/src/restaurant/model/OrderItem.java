@@ -3,7 +3,7 @@ package restaurant.model;
 public class OrderItem {
 
     private final Item item;
-    private int quantity;
+    private final int quantity;
     private final double price;
 
     public OrderItem(Item item, int quantity) {
@@ -18,10 +18,6 @@ public class OrderItem {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getPrice() {

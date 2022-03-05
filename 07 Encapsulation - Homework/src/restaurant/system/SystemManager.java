@@ -5,7 +5,7 @@ import restaurant.auth.LoginStatus;
 import restaurant.model.Order;
 import restaurant.model.OrderStatus;
 import restaurant.model.Table;
-import restaurant.ui.Communicator;
+import restaurant.ui.ConsoleManager;
 import restaurant.model.ItemType;
 
 import java.util.List;
@@ -13,18 +13,20 @@ import java.util.List;
 public class SystemManager {
 
     private final Authenticator authenticator;
-    private final Communicator communicator;
+    private final ConsoleManager consoleManager;
     private final SystemDatabase systemDatabase;
 
-    public SystemManager() {
-        this.authenticator = new Authenticator();
-        this.communicator = new Communicator();
-        this.systemDatabase = new SystemDatabase();
+    public SystemManager(Authenticator authenticator,
+                         ConsoleManager consoleManager,
+                         SystemDatabase systemDatabase) {
+        this.authenticator = authenticator;
+        this.consoleManager = consoleManager;
+        this.systemDatabase = systemDatabase;
     }
 
     public void start() {
         while (true) {
-            communicator.show("Restaurant System");
+            consoleManager.show("Restaurant System");
             if (authenticator.hasLoggedAccount()) {
                 processAccountOptions();
             } else {
@@ -34,21 +36,21 @@ public class SystemManager {
     }
 
     private void startLoginProcess() {
-        communicator.show("Please login to continue!");
+        consoleManager.show("Please login to continue!");
         String username = getCredentials("Username: ");
         String password = getCredentials("Password: ");
 
         LoginStatus loginStatus = authenticator.login(username, password);
         if (loginStatus == LoginStatus.LOGIN_FAILED) {
-            communicator.show("Login failed!");
+            consoleManager.show("Login failed!");
         } else {
-            communicator.show("Login successful!");
+            consoleManager.show("Login successful!");
         }
     }
 
     private String getCredentials(String text) {
-        communicator.show(text);
-        return communicator.getTextInput();
+        consoleManager.show(text);
+        return consoleManager.getTextInput();
     }
 
     private void processAccountOptions() {
@@ -60,12 +62,13 @@ public class SystemManager {
     }
 
     private void runChefOptions() {
-        communicator.show(getChefOptions());
-        int accountChoice = communicator.getDecimalInput();
+        consoleManager.show(getChefOptions());
+        int accountChoice = consoleManager.getDecimalInput();
         switch (accountChoice) {
             case 1 -> authenticator.logout();
             case 2 -> showNewOrdersProcess();
             case 3 -> startChangingOrderStatusProcess();
+            default -> consoleManager.show("No such option!");
         }
     }
 
@@ -75,7 +78,7 @@ public class SystemManager {
     }
 
     private void changeOrderStatus(Order currentOrder) {
-        communicator.show(currentOrder);
+        consoleManager.show(currentOrder);
         if (authenticator.hasLoggedChef()) {
             changeStatusByChef(currentOrder);
         } else {
@@ -84,34 +87,34 @@ public class SystemManager {
     }
 
     private void changeStatusByChef(Order currentOrder) {
-        communicator.show(getChefAvailableOrderStatuses());
-        int accountChoice = communicator.getDecimalInput();
+        consoleManager.show(getChefAvailableOrderStatuses());
+        int accountChoice = consoleManager.getDecimalInput();
         switch (accountChoice) {
             case 1 -> currentOrder.setOrderStatus(OrderStatus.PREPARING);
             case 2 -> currentOrder.setOrderStatus(OrderStatus.READY);
-            default -> communicator.show("No such status!");
+            default -> consoleManager.show("No such status!");
         }
     }
 
     private void changeStatusByWaiter(Order currentOrder) {
-        communicator.show(getWaiterAvailableOrderStatuses());
-        int accountChoice = communicator.getDecimalInput();
+        consoleManager.show(getWaiterAvailableOrderStatuses());
+        int accountChoice = consoleManager.getDecimalInput();
         switch (accountChoice) {
             case 1 -> currentOrder.setOrderStatus(OrderStatus.SERVED);
             case 2 -> finishOrderProcess(currentOrder);
-            default -> communicator.show("No such status!");
+            default -> consoleManager.show("No such status!");
         }
     }
 
     private void finishOrderProcess(Order currentOrder) {
         currentOrder.setOrderStatus(OrderStatus.PAID);
-        communicator.show(currentOrder);
+        consoleManager.show(currentOrder);
         systemDatabase.getTable(currentOrder.getTableID()).setOrder(null);
     }
 
     private void runWaiterOptions() {
-        communicator.show(getWaiterOptions());
-        int accountChoice = communicator.getDecimalInput();
+        consoleManager.show(getWaiterOptions());
+        int accountChoice = consoleManager.getDecimalInput();
         switch (accountChoice) {
             case 1 -> authenticator.logout();
             case 2 -> startCreatingNewItemProcess();
@@ -122,57 +125,100 @@ public class SystemManager {
             case 7 -> startModifyingOrderProcess();
             case 8 -> startChangingOrderStatusProcess();
             case 9 -> showPaidOrdersProcess();
+            default -> consoleManager.show("No such option!");
         }
     }
 
     private void startCreatingNewItemProcess() {
         showCurrentMenu();
-        communicator.show("Enter item name: ");
-        String itemName = communicator.getTextInput();
-        communicator.show("Enter item price: ");
-        double itemPrice = communicator.getDecimalInput();
-        communicator.show("Enter item type: (ex. Drink/Dish)");
-        ItemType itemType = convertAccountChoice(communicator.getTextInput());
+        consoleManager.show("Enter item name: ");
+        String itemName = consoleManager.getTextInput();
+        consoleManager.show("Enter item price: ");
+        double itemPrice = consoleManager.getDoubleNumberInput();
+        consoleManager.show("Enter item type: (ex. Drink/Dish)");
+        String itemTypeText = consoleManager.getTextInput();
+        ItemType itemType = ItemType.getItemTypeByTextInput(itemTypeText);
 
         boolean isItemAdded = systemDatabase.createMenuItem(itemName, itemPrice, itemType);
         if (isItemAdded) {
-            communicator.show("Item added successfully!");
+            consoleManager.show("Item added successfully!");
         } else {
-            communicator.show("Item already exists!");
+            consoleManager.show("Item already exists!");
         }
-    }
-
-    private ItemType convertAccountChoice(String textInput) {
-        if (textInput.equalsIgnoreCase("drink")) return ItemType.DRINK;
-        else return ItemType.FOOD;
     }
 
     private void startRemovingItemProcess() {
         showCurrentMenu();
-        communicator.show("Enter item name: ");
-        String itemName = communicator.getTextInput();
+        consoleManager.show("Enter item name: ");
+        String itemName = consoleManager.getTextInput();
 
         boolean isItemRemoved = systemDatabase.removeMenuItem(itemName);
         if (isItemRemoved) {
-            communicator.show("Item removed successfully!");
+            consoleManager.show("Item removed successfully!");
         } else {
-            communicator.show("Item does not exists!");
+            consoleManager.show("Item does not exists!");
         }
     }
 
     private void startCreatingNewOrderProcess() {
-        communicator.show("Available tables: " + systemDatabase.getAvailableTablesNumbers());
+        consoleManager.show("Available tables: " + systemDatabase.getAvailableTablesNumbers());
         boolean isOrderCreated = systemDatabase.createNewOrder(getTableNumberInput());
         if (isOrderCreated) {
-            communicator.show("Order created successfully!");
+            consoleManager.show("Order created successfully!");
         } else {
-            communicator.show("Table is not available or does not exists!");
+            consoleManager.show("Table is not available or does not exists!");
         }
     }
 
     private void startModifyingOrderProcess() {
         Order currentOrder = getOrder();
-        addItemToOrderProcess(currentOrder);
+        consoleManager.show(getModifyingOrderOptions());
+        int accountChoice = consoleManager.getDecimalInput();
+        switch (accountChoice) {
+            case 1 -> addItemToOrderProcess(currentOrder);
+            case 2 -> removeItemFromOrderProcess(currentOrder);
+            default -> consoleManager.show("No such option!");
+        }
+    }
+
+    private void addItemToOrderProcess(Order currentOrder) {
+        do {
+            showCurrentMenu();
+            consoleManager.show(currentOrder);
+
+            consoleManager.show("Insert item name or type exit: ");
+            String itemName = consoleManager.getTextInput();
+            if (itemName.equalsIgnoreCase("exit")) break;
+            consoleManager.show("Insert quantity: ");
+            int itemQuantity = consoleManager.getDecimalInput();
+
+            boolean isItemAddedToOrder = systemDatabase.modifyOrder(currentOrder, itemName, itemQuantity);
+            if (isItemAddedToOrder) {
+                consoleManager.show("Item added successfully to the order!");
+            } else {
+                consoleManager.show("No such item exists!");
+                break;
+            }
+        } while (true);
+    }
+
+    private void removeItemFromOrderProcess(Order currentOrder) {
+        do {
+            showCurrentMenu();
+            consoleManager.show(currentOrder);
+
+            consoleManager.show("Insert item name or type exit: ");
+            String itemName = consoleManager.getTextInput();
+            if (itemName.equalsIgnoreCase("exit")) break;
+
+            boolean isItemRemovedFromOrder = systemDatabase.modifyOrder(currentOrder, itemName);
+            if (isItemRemovedFromOrder) {
+                consoleManager.show("Item removed successfully from the order!");
+            } else {
+                consoleManager.show("No such item exists!");
+                break;
+            }
+        } while (true);
     }
 
     private Order getOrder() {
@@ -184,44 +230,23 @@ public class SystemManager {
                 if (currentOrder != null) {
                     break;
                 } else {
-                    communicator.show("No such order exists!");
+                    consoleManager.show("No such order exists!");
                 }
             } else {
-                communicator.show("No such table exists!");
+                consoleManager.show("No such table exists!");
             }
         } while (true);
         return currentOrder;
     }
 
     private int getTableNumberInput() {
-        communicator.show("Enter table number: ");
-        return communicator.getDecimalInput();
-    }
-
-    private void addItemToOrderProcess(Order currentOrder) {
-        do {
-            showCurrentMenu();
-            communicator.show(currentOrder);
-
-            communicator.show("Insert item name or type exit: ");
-            String itemName = communicator.getTextInput();
-            if (itemName.equalsIgnoreCase("exit")) break;
-            communicator.show("Insert quantity: ");
-            int itemQuantity = communicator.getDecimalInput();
-
-            boolean isItemAddedToOrder = systemDatabase.modifyOrder(currentOrder, itemName, itemQuantity);
-            if (isItemAddedToOrder) {
-                communicator.show("Item added successfully to the order!");
-            } else {
-                communicator.show("No such item exists!");
-                break;
-            }
-        } while (true);
+        consoleManager.show("Enter table number: ");
+        return consoleManager.getDecimalInput();
     }
 
     private void showCurrentMenu() {
-        communicator.show("Restaurant Menu");
-        communicator.showMenu(systemDatabase.getMenuDetails());
+        consoleManager.show("Restaurant Menu");
+        consoleManager.showMenu(systemDatabase.getMenuDetails());
     }
 
     private void showNewOrdersProcess() {
@@ -239,10 +264,10 @@ public class SystemManager {
     private void getOrdersDetailsByStatus(String paid, String text, String text1) {
         List<Order> ordersByStatus = systemDatabase.getSortedOrdersByGivenStatus(paid);
         if (ordersByStatus.isEmpty()) {
-            communicator.show(text);
+            consoleManager.show(text);
         } else {
-            communicator.show(text1);
-            communicator.show(ordersByStatus);
+            consoleManager.show(text1);
+            consoleManager.show(ordersByStatus);
         }
     }
 
@@ -259,7 +284,6 @@ public class SystemManager {
                 2. Ready""";
     }
 
-    //TODO option 7.2 remove OrderItem
     private String getWaiterOptions() {
         return """
                 1. Logout
@@ -271,6 +295,12 @@ public class SystemManager {
                 7. Modify order
                 8. Change order status
                 9. View order history""";
+    }
+
+    private String getModifyingOrderOptions() {
+        return """
+                1. Add item to order
+                2. Remove item from order""";
     }
 
     private String getWaiterAvailableOrderStatuses() {
