@@ -7,10 +7,12 @@ public class Course {
 
     private String courseYear;
     private List<SchoolClass> schoolClasses;
+    private double courseScore;
 
     public Course(String courseYear) {
         this.courseYear = courseYear;
         this.schoolClasses = new ArrayList<SchoolClass>();
+        this.courseScore = calculateScore();
         createInitialClasses();
     }
 
@@ -37,6 +39,19 @@ public class Course {
         }
 
         return null;
+    }
+
+    public double getCourseScore() {
+        return courseScore;
+    }
+
+    private double calculateScore() {
+        double totalScore = 0;
+        for (SchoolClass schoolClass : schoolClasses) {
+            totalScore = totalScore + schoolClass.getSchoolClassScore();
+        }
+
+        return totalScore;
     }
 
     private void createInitialClasses() {

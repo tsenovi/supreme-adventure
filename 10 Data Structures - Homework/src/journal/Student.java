@@ -6,11 +6,13 @@ import java.util.List;
 public class Student {
 
     private String studentName;
-    private List<Grade> grades;
+    private List<Evaluation> evaluations;
+    private double studentScore;
 
     public Student(String studentName) {
         this.studentName = studentName;
-        this.grades = new ArrayList<Grade>();
+        this.evaluations = new ArrayList<Evaluation>();
+        this.studentScore = calculateScore();
     }
 
     public String getStudentName() {
@@ -21,11 +23,24 @@ public class Student {
         this.studentName = studentName;
     }
 
-    public List<Grade> getGrades() {
-        return grades;
+    public List<Evaluation> getGrades() {
+        return evaluations;
     }
 
-    public void setGrades(List<Grade> grades) {
-        this.grades = grades;
+    public void setGrades(List<Evaluation> evaluations) {
+        this.evaluations = evaluations;
+    }
+
+    public double getStudentScore() {
+        return studentScore;
+    }
+
+    private double calculateScore() {
+        double totalScore = 0;
+        for (Evaluation evaluation : evaluations) {
+            totalScore = totalScore + evaluation.getValue();
+        }
+
+        return totalScore;
     }
 }

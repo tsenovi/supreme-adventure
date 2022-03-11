@@ -1,12 +1,12 @@
 package journal;
 
-public class Grade {
+public class Evaluation {
 
     private double value;
     private Student student;
     private Subject subject;
 
-    public Grade(double value, Student student, Subject subject) {
+    public Evaluation(double value, Student student, Subject subject) {
         this.value = value;
         this.student = student;
         this.subject = subject;
