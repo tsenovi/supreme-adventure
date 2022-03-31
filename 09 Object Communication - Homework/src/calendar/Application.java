@@ -3,17 +3,17 @@ package calendar;
 import com.ConsoleManager;
 import event.DateParser;
 import event.Event;
-import event.PersonalCalendar;
+import database.EventsDatabase;
 
 import java.util.Date;
 
 public class Application {
 
     private final ConsoleManager consoleManager;
-    private final PersonalCalendar personalCalendar;
+    private final EventsDatabase personalCalendar;
 
 
-    public Application(ConsoleManager consoleManager, PersonalCalendar personalCalendar) {
+    public Application(ConsoleManager consoleManager, EventsDatabase personalCalendar) {
         this.consoleManager = consoleManager;
         this.personalCalendar = personalCalendar;
     }
@@ -28,18 +28,26 @@ public class Application {
                 case 2 -> previewDailyProgram();
                 case 3 -> previewEventDetails();
                 case 4 -> changeEventTime();
-                //TODO option 5 search for free space for event
+                case 5 -> searchForFreeEventTimeRange();
+                //TODO option 5
             }
         }
+    }
+
+    private void searchForFreeEventTimeRange() {
+        consoleManager.show("Event start date " + DateParser.DATE_FORMAT);
+        String startDate = consoleManager.getTextInput();
+        consoleManager.show("Event time duration " + DateParser.TIME_FORMAT);
+        String eventDuration = consoleManager.getTextInput();
     }
 
     private void changeEventTime() {
         consoleManager.show("Enter event name: ");
         String eventName = consoleManager.getTextInput();
         while (true) {
-            System.out.println("Event start time " + DateParser.TIME_FORMAT);
+            consoleManager.show("Event start time " + DateParser.TIME_FORMAT);
             String startTime = consoleManager.getTextInput();
-            System.out.println("Event end time " + DateParser.TIME_FORMAT);
+            consoleManager.show("Event end time " + DateParser.TIME_FORMAT);
             String endTime = consoleManager.getTextInput();
 
             if (DateParser.isCorrectTime(startTime) &&
@@ -70,18 +78,18 @@ public class Application {
     }
 
     private void createEvent() {
-        System.out.println("Enter event details");
-        System.out.println("Event name:");
+        consoleManager.show("Enter event details");
+        consoleManager.show("Event name:");
         String name = consoleManager.getTextInput();
-        System.out.println("Event start date " + DateParser.DATE_FORMAT);
+        consoleManager.show("Event start date " + DateParser.DATE_FORMAT);
         String startDate = consoleManager.getTextInput();
-        System.out.println("Event start time " + DateParser.TIME_FORMAT);
+        consoleManager.show("Event start time " + DateParser.TIME_FORMAT);
         String startTime = consoleManager.getTextInput();
-        System.out.println("Event end date " + DateParser.DATE_FORMAT);
+        consoleManager.show("Event end date " + DateParser.DATE_FORMAT);
         String endDate = consoleManager.getTextInput();
-        System.out.println("Event end time " + DateParser.TIME_FORMAT);
+        consoleManager.show("Event end time " + DateParser.TIME_FORMAT);
         String endTime = consoleManager.getTextInput();
-        System.out.println("Event comment:");
+        consoleManager.show("Event comment:");
         String comment = consoleManager.getTextInput();
 
         personalCalendar.addEvent(name, startDate, startTime, endDate, endTime, comment);

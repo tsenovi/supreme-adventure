@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e15c940e-6a40-42c9-ad25-b8300575fcd4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/evaluation/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/inputoutput/InputOutputImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/school/Course.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/school/School.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/school/SchoolClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/system/DiaryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../09 Object Communication - Homework/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../09 Object Communication - Homework/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../09 Object Communication - Homework/src/calendar/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../09 Object Communication - Homework/src/calendar/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../09 Object Communication - Homework/src/event/PersonalCalendar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../09 Object Communication - Homework/src/database/EventsDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../09 Object Communication - Homework/src/event/PersonalCalendarImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../09 Object Communication - Homework/src/database/EventsDatabaseImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/Course.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/Evaluation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/evaluation/Evaluation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/InputOutput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/JournalController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/School.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/SchoolClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/SchoolDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/school/SchoolDatabaseImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../10 Data Structures - Homework/src/journal/Subject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../10 Data Structures - Homework/src/eDiary/evaluation/Subject.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kC1hjDZQDLs74bTr5wMHyKYWBT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="taxi" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\teodo\Workspace\java-oop-2020\24-lambdas-streams\test\taxi" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\teodo\Workspace\java-oop-2020\24-lambdas-streams\test\taxi" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.TestTask6ParetoPrinciple">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="24-lambdas-streams" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestTask1FakeDrivers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="24-lambdas-streams" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taxi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taxi" />
+      <option name="MAIN_CLASS_NAME" value="taxi.TestTask1FakeDrivers" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestTask1Java" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="24-lambdas-streams" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taxi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taxi" />
+      <option name="MAIN_CLASS_NAME" value="taxi.TestTask1Java" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestTask2FaithfulPassengers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="24-lambdas-streams" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taxi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taxi" />
+      <option name="MAIN_CLASS_NAME" value="taxi.TestTask2FaithfulPassengers" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestTask6ParetoPrinciple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="24-lambdas-streams" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="taxi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="taxi" />
+      <option name="MAIN_CLASS_NAME" value="taxi.TestTask6ParetoPrinciple" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TestTask6ParetoPrinciple" />
+        <item itemvalue="JUnit.TestTask2FaithfulPassengers" />
+        <item itemvalue="JUnit.TestTask1FakeDrivers" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.TestTask1Java" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e15c940e-6a40-42c9-ad25-b8300575fcd4" name="Default Changelist" comment="" />
+      <created>1605189883185</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605189883185</updated>
+    </task>
+    <servers />
+  </component>
+</project>
